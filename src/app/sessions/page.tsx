@@ -1,13 +1,8 @@
-import { Metadata } from "next";
-import SessionListPage from "../components/compositions/SessionListPage";
 import AppHeading from "@/components/common/AppHeading";
+import SessionListPage from "@/components/compositions/SessionListPage";
 import { Box } from "@chakra-ui/react";
 
-export const metadata: Metadata = {
-  title: "Talkdraft | セッション一覧",
-};
-
-export default function Home() {
+export default function Sessions() {
   return (
     <Box p="4" width="full">
       <AppHeading>セッション一覧</AppHeading>
