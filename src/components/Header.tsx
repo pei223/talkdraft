@@ -1,8 +1,10 @@
 "use client";
 
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Popover, Portal, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { LuCircleAlert } from "react-icons/lu";
 import { MdEditNote } from "react-icons/md";
+import AppHeading from "./common/AppHeading";
 
 export default function Header() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function Header() {
       as="header"
       align="center"
       justify="space-between"
+      flexWrap="wrap"
       background="white"
       color="gray.700"
       width="full"
@@ -25,14 +28,40 @@ export default function Header() {
     >
       <Box display="flex" alignItems="center">
         <MdEditNote size="1.8em" />
-        <Heading
+        <AppHeading
           size="lg"
-          onClick={() => router.push("/")}
           cursor="pointer"
           marginLeft="2"
+          onClick={() => router.push("/")}
         >
           Talkdraft
-        </Heading>
+        </AppHeading>
+        <Box ml="4" display="flex" alignItems="center">
+          <AppHeading level="sub">Beta版</AppHeading>
+          <Popover.Root>
+            <Popover.Trigger asChild ml="2">
+              <LuCircleAlert size="1.2rem" cursor="pointer" color="red" />
+            </Popover.Trigger>
+            <Portal>
+              <Popover.Positioner>
+                <Popover.Content>
+                  <Popover.Arrow />
+                  <Popover.Body>
+                    <Popover.Title fontWeight="medium">
+                      ⚠️ご注意ください
+                    </Popover.Title>
+                    <Text my="4">
+                      本サービスはベータ版のため、会話履歴や設定情報をブラウザの
+                      キャッシュに保存しています。
+                      <br />
+                      ブラウザのキャッシュやストレージを削除すると、過去の履歴とモデル設定が消えてしまいますのでご注意ください。
+                    </Text>
+                  </Popover.Body>
+                </Popover.Content>
+              </Popover.Positioner>
+            </Portal>
+          </Popover.Root>
+        </Box>
       </Box>
 
       <Box>
