@@ -5,7 +5,14 @@ import {
   TalkDraftSessionInfo,
   updateTalkDraftSession,
 } from "@/services/session";
-import { Box, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Dialog,
+  GridItem,
+  Portal,
+  SimpleGrid,
+  Spinner,
+} from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import DraftView from "../DraftView";
 import ChatView from "../ChatView";
@@ -17,6 +24,8 @@ import {
 } from "@/services/llm";
 import { getModelConfig } from "@/services/modelConfig";
 import { BaseMessage, HumanMessage } from "@langchain/core/messages";
+import Description from "../common/Description";
+import AppButton from "../common/AppButton";
 
 type Props = {
   sessionName: string;
@@ -30,6 +39,7 @@ export default function SessionPage({ sessionName }: Props) {
   const [streamingDraftContent, setStreamingDraftContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
+  const [isModelNotFound, setIsModelNotFound] = useState(false);
 
   useEffect(() => {
     const sess = getTalkDraftSessionFromName(sessionName);
@@ -40,9 +50,8 @@ export default function SessionPage({ sessionName }: Props) {
 
     const modelConfig = getModelConfig();
     if (!modelConfig) {
-      throw new Error(
-        "モデル設定が見つかりません。設定ページでモデルを設定してください。"
-      );
+      setIsModelNotFound(true);
+      return;
     }
 
     const newModel = new LLMModel(
@@ -142,7 +151,34 @@ export default function SessionPage({ sessionName }: Props) {
 
   return (
     <Box height="full" display="flex" flexDirection="column">
-      {session == null ? (
+      {isModelNotFound ? (
+        <Dialog.Root size="sm" open>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>モデルを設定してください</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <Description mb="6">
+                    記事生成にはAIモデルの設定が必要です。
+                  </Description>
+                  <AppButton
+                    width="full"
+                    level="secondary"
+                    onClick={() => {
+                      window.location.href = "/setting";
+                    }}
+                  >
+                    設定画面に進む
+                  </AppButton>
+                </Dialog.Body>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
+      ) : session == null || model == null ? (
         <Box
           height="full"
           display="flex"
@@ -156,6 +192,7 @@ export default function SessionPage({ sessionName }: Props) {
       ) : (
         <SimpleGrid
           width="full"
+          height="full"
           columns={{
             base: 12,
           }}
