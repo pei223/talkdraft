@@ -11,10 +11,11 @@ import {
 } from "@/services/session";
 import { deleteSessionHistories } from "@/services/llm";
 import { PiPlus } from "react-icons/pi";
-import { Box, Text, Spinner } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import SessionFormDialog from "../SessionFormDialog";
 import SessionListItem from "../SessionListItem";
 import AppButton from "../common/AppButton";
+import Description from "../common/Description";
 
 export default function SessionListPage() {
   const [dialogState, setDialogState] = useState<"none" | "create" | "edit">(
@@ -72,7 +73,7 @@ export default function SessionListPage() {
         </Box>
       )}
       {!loading && talkDraftSessions.length === 0 && (
-        <Text my={4}>セッションを作成してください。</Text>
+        <Description my={6}>セッションを作成してください。</Description>
       )}
       {talkDraftSessions.length > 0 &&
         talkDraftSessions.map((session) => {

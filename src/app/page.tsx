@@ -4,7 +4,7 @@ import AppHeading from "@/components/common/AppHeading";
 import { Box } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
-  title: "Talkdraft | セッション一覧",
+  title: "セッション一覧 | Talkdraft",
 };
 
 export default function Home() {
