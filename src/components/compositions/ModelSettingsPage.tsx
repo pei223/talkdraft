@@ -22,6 +22,7 @@ import AppHeading from "../common/AppHeading";
 import Description from "../common/Description";
 import AppButton from "../common/AppButton";
 import { toaster, Toaster } from "@/snippet-components/ui/toaster";
+import { sendClickEvent, sendExecEvent } from "@/utils/gaUtils";
 
 export default function ModelSettingsPage() {
   const [config, setConfig] = useState<ModelConfig>(DEFAULT_MODEL_SETTING);
@@ -43,6 +44,7 @@ export default function ModelSettingsPage() {
   };
 
   const handleSave = async () => {
+    sendClickEvent("setting", "save_model_setting");
     setIsLoading(true);
     try {
       saveModelConfig(config);
@@ -59,6 +61,7 @@ export default function ModelSettingsPage() {
   };
 
   const handleTest = async () => {
+    sendClickEvent("setting", "test_model_setting");
     setIsLoading(true);
     try {
       const testModel = new LLMModel(
@@ -69,12 +72,14 @@ export default function ModelSettingsPage() {
 
       await testModel.sendForConnectionTest();
 
+      sendExecEvent("setting", "finished_test_model_setting");
       toaster.create({
         description: "モデルとの接続が確認できました",
         type: "success",
         closable: true,
       });
     } catch {
+      sendExecEvent("setting", "failed_to_test_model_setting");
       alert(
         "モデルとの接続に失敗しました。APIキーとモデル名を確認してください。"
       );

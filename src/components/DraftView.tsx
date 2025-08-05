@@ -15,6 +15,7 @@ import { LuCopy } from "react-icons/lu";
 import { Toaster, toaster } from "@/snippet-components/ui/toaster";
 import AppButton from "./common/AppButton";
 import AppHeading from "./common/AppHeading";
+import { sendClickEvent } from "@/utils/gaUtils";
 
 interface Props extends StackProps {
   draftHistories: DraftHistory[];
@@ -56,6 +57,7 @@ export default function DraftView({
     if (selectedDraftIndex < 0) {
       return;
     }
+    sendClickEvent("session", "select_article_version");
     setDisplayDraft(draftHistories[selectedDraftIndex].content);
     setEditContent(draftHistories[selectedDraftIndex].content);
   }, [selectedDraftIndex, draftHistories]);

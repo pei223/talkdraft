@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { LuCircleAlert } from "react-icons/lu";
 import { MdEditNote } from "react-icons/md";
 import AppHeading from "./common/AppHeading";
+import { sendClickEvent } from "@/utils/gaUtils";
 
 export default function Header() {
   const router = useRouter();
@@ -44,7 +45,13 @@ export default function Header() {
             Beta版
           </Badge>
           <Popover.Root>
-            <Popover.Trigger asChild ml="3">
+            <Popover.Trigger
+              asChild
+              ml="3"
+              onClick={() => {
+                sendClickEvent("common", "click_warning_popover");
+              }}
+            >
               <LuCircleAlert size="1.2rem" cursor="pointer" color="red" />
             </Popover.Trigger>
             <Portal>
@@ -74,7 +81,10 @@ export default function Header() {
           variant="plain"
           color="gray.700"
           marginRight="4"
-          onClick={() => router.push("/sessions")}
+          onClick={() => {
+            sendClickEvent("common", "click_session_list_link");
+            router.push("/sessions");
+          }}
         >
           <Text fontWeight="medium" fontSize="sm">
             セッション一覧
@@ -84,7 +94,10 @@ export default function Header() {
         <Link
           variant="plain"
           color="gray.700"
-          onClick={() => router.push("/setting")}
+          onClick={() => {
+            sendClickEvent("common", "click_model_setting_link");
+            router.push("/setting");
+          }}
         >
           <Text fontWeight="medium" fontSize="sm">
             設定

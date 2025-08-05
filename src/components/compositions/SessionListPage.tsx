@@ -16,6 +16,7 @@ import SessionFormDialog from "../SessionFormDialog";
 import SessionListItem from "../SessionListItem";
 import AppButton from "../common/AppButton";
 import Description from "../common/Description";
+import { sendClickEvent } from "@/utils/gaUtils";
 
 export default function SessionListPage() {
   const [dialogState, setDialogState] = useState<"none" | "create" | "edit">(
@@ -39,9 +40,11 @@ export default function SessionListPage() {
   const onSubmit = useCallback(
     (sessionName: string) => {
       if (editTarget == null) {
+        sendClickEvent("setting", "create_session");
         createTalkDraftSession(sessionName);
         setTalkDraftSessions(getAllTalkDraftSessions());
       } else {
+        sendClickEvent("setting", "update_session");
         updateTalkDraftSession(editTarget.sessionId, {
           sessionName: sessionName,
         });
@@ -53,6 +56,7 @@ export default function SessionListPage() {
   );
 
   const onDeleteSession = useCallback((sessionId: string) => {
+    sendClickEvent("setting", "delete_session");
     deleteTalkDraftSession(sessionId);
     deleteSessionHistories(sessionId);
     setTalkDraftSessions(getAllTalkDraftSessions());

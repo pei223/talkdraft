@@ -27,6 +27,7 @@ import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 import Description from "../common/Description";
 import AppButton from "../common/AppButton";
 import { useRouter } from "next/navigation";
+import { sendClickEvent, sendExecEvent } from "@/utils/gaUtils";
 
 type Props = {
   sessionName: string;
@@ -85,6 +86,7 @@ export default function SessionPage({ sessionName }: Props) {
         console.warn("session not found");
         return;
       }
+      sendClickEvent("session", "send_message");
       setHistories([...model.getChatHistories(), new HumanMessage(input)]);
       setIsLoading(true);
       try {
@@ -119,6 +121,7 @@ export default function SessionPage({ sessionName }: Props) {
         updateTalkDraftSession(session.sessionId, {
           sessionName: session.sessionName,
         });
+        sendExecEvent("session", "finished_generate_article");
       } finally {
         setIsLoading(false);
       }
@@ -138,6 +141,7 @@ export default function SessionPage({ sessionName }: Props) {
         done(false);
         return;
       }
+      sendClickEvent("session", "save_fixed_article");
       setStreamingDraftContent(content);
       model.saveDraft(content, "user");
       setDraftHistories(model.getAllDraftHistories());
@@ -172,6 +176,10 @@ export default function SessionPage({ sessionName }: Props) {
                     width="full"
                     level="secondary"
                     onClick={() => {
+                      sendClickEvent(
+                        "session",
+                        "click_unset_model_setting_link"
+                      );
                       window.location.href = "/setting";
                     }}
                   >

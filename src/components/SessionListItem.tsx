@@ -5,6 +5,7 @@ import { useState } from "react";
 import DeleteSessionDialog from "./DeleteSessionDialog";
 import Description from "./common/Description";
 import { dateStringToDisplayText } from "@/utils/dateUtil";
+import { sendClickEvent } from "@/utils/gaUtils";
 
 interface Props extends CardRootProps {
   session: TalkDraftSessionInfo;
@@ -40,7 +41,12 @@ export default function SessionListItem({
         px={4}
       >
         <Box>
-          <Link href={`/sessions/${session.sessionName}`}>
+          <Link
+            href={`/sessions/${session.sessionName}`}
+            onClick={() => {
+              sendClickEvent("sessions", "select_session");
+            }}
+          >
             {session.sessionName}
           </Link>
           <Description level="sub">
