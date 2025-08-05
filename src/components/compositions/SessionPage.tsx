@@ -26,6 +26,7 @@ import { getModelConfig } from "@/services/modelConfig";
 import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 import Description from "../common/Description";
 import AppButton from "../common/AppButton";
+import { useRouter } from "next/navigation";
 
 type Props = {
   sessionName: string;
@@ -41,10 +42,13 @@ export default function SessionPage({ sessionName }: Props) {
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [isModelNotFound, setIsModelNotFound] = useState(false);
 
+  const router = useRouter();
+
   useEffect(() => {
     const sess = getTalkDraftSessionFromName(sessionName);
     if (sess == null) {
-      throw new Error("Session not found: " + sessionName);
+      router.push("/sessions");
+      return;
     }
     setSession(sess);
 
