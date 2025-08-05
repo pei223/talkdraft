@@ -73,7 +73,7 @@ export default function SessionPage({ sessionName }: Props) {
       setStreamingMessage("");
       setStreamingDraftContent(newModel.getLatestDraft()?.content || "");
     }
-  }, [sessionName]);
+  }, [sessionName, router]);
 
   const onChat = useCallback(
     async (input: string) => {

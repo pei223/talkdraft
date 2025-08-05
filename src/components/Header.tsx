@@ -1,6 +1,14 @@
 "use client";
 
-import { Box, Flex, Link, Popover, Portal, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Flex,
+  Link,
+  Popover,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { LuCircleAlert } from "react-icons/lu";
 import { MdEditNote } from "react-icons/md";
@@ -28,18 +36,15 @@ export default function Header() {
     >
       <Box display="flex" alignItems="center">
         <MdEditNote size="1.8em" />
-        <AppHeading
-          size="lg"
-          cursor="pointer"
-          marginLeft="2"
-          onClick={() => router.push("/")}
-        >
+        <AppHeading size="lg" cursor="pointer" onClick={() => router.push("/")}>
           Talkdraft
         </AppHeading>
-        <Box ml="4" display="flex" alignItems="center">
-          <AppHeading level="sub">Beta版</AppHeading>
+        <Box ml="1" display="flex" alignItems="center">
+          <Badge colorPalette="blue" fontSize="xs" variant="solid">
+            Beta版
+          </Badge>
           <Popover.Root>
-            <Popover.Trigger asChild ml="2">
+            <Popover.Trigger asChild ml="3">
               <LuCircleAlert size="1.2rem" cursor="pointer" color="red" />
             </Popover.Trigger>
             <Portal>
@@ -69,7 +74,7 @@ export default function Header() {
           variant="plain"
           color="gray.700"
           marginRight="4"
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/sessions")}
         >
           <Text fontWeight="medium" fontSize="sm">
             セッション一覧
